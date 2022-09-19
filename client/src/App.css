@@ -1,0 +1,380 @@
+/* general */
+*, ::after, ::before{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: cornsilk;
+}
+
+h1, h2, h3{
+  margin: 10px;
+}
+
+hr{
+  width: 90%;
+  margin: 25px auto;
+}
+
+.btn{
+  display: inline-block;
+  padding: 0.75rem 1rem;
+  margin: 1rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.icon{
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+/* for form setting */
+.form{
+  margin: 10px auto;
+  width: 80%;
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.form-section{
+  width: 85%;
+  background-color: lightsalmon;
+  margin: 10px auto;
+  padding: 10px;
+  font-size: 1.2rem;
+  box-shadow: 5px 5px coral;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-section .invalid{
+  background-color: red;
+  color: white;
+}
+
+.form-section > input , .form-section > select{
+  width: 150px;
+  height: 30px;
+  font-size: 1rem;
+  text-align: center;
+}
+
+.form > .btn{
+  align-self: flex-end;
+}
+
+.form > h4{
+  width: 80%;
+  margin: 10px auto;
+}
+
+/* for map setting */
+
+#map{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#map .btn{
+  background-color: aquamarine;
+  transition: .5s;
+}
+
+#map .btn:hover{
+  transform: scale(1.1);
+}
+
+#map > .map-title{
+  background-color: bisque;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+#map > .map-container{
+  margin: 10px;
+}
+
+.map-ending{
+  font-size: 1.3rem;
+}
+
+.map-container > div{
+  width: 30px;
+  height: 30px;
+  border: 2px solid blanchedalmond;
+  float: left;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 1.5em;
+  cursor: default;
+  background-color: aliceblue;
+}
+
+
+/* for navbar */
+.nav-bar{
+  height: 100px;
+  border-bottom: 3px solid black;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.nav-bar > .icon{
+  margin-left: 5%;
+  margin-right: 10%;
+}
+
+.nav-bar > .btn{
+  margin: 30px;
+  width: 180px;
+  height: 70px;
+  text-align: center;
+  line-height: 45px;
+  font-size: 1.8rem;
+  transition: .5s;
+}
+
+.nav-bar > .btn:hover{
+  transform: scale(1.1);
+}
+
+/* for main content */
+.main-content{
+  margin: 20px auto;
+  width: 80%;
+  border-radius: 20px;
+  background-color: rgb(225, 246, 246);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.main-content > h1{
+  font-size: 3rem;
+}
+
+#home, #customize, #community{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* for home section */
+#home .btn{
+  transition: .5s;
+}
+
+#home .btn:hover{
+  transform: scale(1.1);
+}
+
+#home > .home-title{
+  margin: 10px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 45px;
+  position: relative;
+}
+
+#home .home-options{
+  margin: 10px auto;
+  background-color: lavender;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border: 1px solid black;
+  border-radius: 5px;
+  position: absolute;
+  top: 45px;
+}
+
+#home .home-title h3{
+  margin: 0px;
+  width: 200px;
+  height: 45px;
+  text-align: center;
+  background-color: rgb(203, 203, 247);
+  border: 1px solid black;
+}
+
+#home .home-options > h3{
+  margin: 10px;
+}
+
+/* for customize mode */
+#customize > img{
+  width: 80%;
+  border-radius: 15px;
+}
+
+#customize h4{
+  font-size: 1.1rem;
+  text-align: left;
+}
+
+#customize .btn{
+  background-color: aquamarine;
+  transition: .5s;
+}
+
+#customize .btn:hover{
+  transform: scale(1.1);
+}
+
+/* for community mode */
+#community > img{
+  width: 50%;
+  opacity: .6;
+}
+
+#community > .map-galaery{
+  width: 92%;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+#community > .pages{
+  margin: 15px auto;
+  display: flex;
+  justify-content: center;
+}
+
+#community > .pages > li{
+  text-align: center;
+  list-style: none;
+  font-size: 1.2rem;
+  margin-right: 4px;
+  border: 1px solid #d7dde4;
+  border-radius: 4px;
+}
+
+#community > .pages > li:hover{
+  border: 1px solid #00a1d6;
+}
+
+#community > .pages > .active{
+  background-color: #00a1d6;
+  color: rgb(225, 246, 246);
+}
+
+#community > .map-comment{
+  align-self: flex-start;
+  margin-left: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 80%;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.map-comment > .rate-map, .map-comment > .rate-difficulty{
+  align-self: center;
+  display: flex;
+  width: 300px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game-map{
+  /* width: 230px; */
+  background-color: turquoise;
+  margin: 10px;
+  padding: 10px;
+  box-shadow: 5px 5px darkturquoise;
+  border-radius: 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.game-map > h3{
+  align-self: center;
+  font-size: 1.3rem;
+  margin: 0 auto 10px;
+}
+
+.game-map h4{
+  font-size: 1.1rem;
+  margin: 5px;
+}
+
+.game-map > .difficulty, .game-map > .rating{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game-map > .difficulty > div, .game-map > .rating > div{
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.game-map > .play, .game-map > .cancel{
+  margin: 5px;
+  text-align: center;
+  align-self: flex-end;
+  cursor: pointer;
+  width: 50px;
+  height: 30px;
+  font-size: 1.1rem;
+  line-height: 30px;
+  background-color: lightgreen;
+  border-radius: 5px;
+}
+
+.game-map > .cancel{
+  margin: 0;
+  display: block;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  line-height: 25px;
+  border-radius: 50%;
+  border: 2px solid gray;
+  background-color: red;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 840px){
+  .form-section{
+    width: 70%;
+  }
+}
+
+@media screen and (min-width: 1200px){
+  .form-section{
+    width: 60%;
+  }
+
+  .form-section > input , .form-section > select{
+    width: 200px;
+  }
+}
