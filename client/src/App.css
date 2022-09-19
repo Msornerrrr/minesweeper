@@ -245,7 +245,7 @@ hr{
 
 /* for community mode */
 #community > img{
-  width: 50%;
+  width: 300px;
   opacity: .6;
 }
 
