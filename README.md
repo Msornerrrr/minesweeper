@@ -8,4 +8,4 @@ In this project, you can play design minesweeper puzzle with others
 
 ## Some notifications
 
-This is an ongoing project, I'll keep updating the projects to make it better. Currently, I'm adding more functionality to the backend and designing the user authentication, which hopefully I'll finished them after the exam week.
+This is an ongoing project, I'll keep updating the projects to make it better. Currently, I'm adding more functionality to the backend and designing the user authentication, which hopefully I'll finish them after the exam week.
