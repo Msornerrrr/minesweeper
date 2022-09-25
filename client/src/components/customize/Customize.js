@@ -1,45 +1,64 @@
-import React,{ useState } from "react";
+import React,{ useEffect, useState } from "react";
 import Map from '../map/Map';
 import { generateEmptyMap, setMine} from "../../util/map-helper";
+import { checkType, checkRange } from "../../util/input-valid";
 
 // image imported
 import designSuccess from '../../images/minesweeper-design.png';
 
 // Material UI
-import { Rating, Typography } from '@mui/material';
+import { Slider, TextField, Rating } from "@mui/material";
+
+// all modes for Customize
+const MODES = {
+    BEFORECREATE: 'before-create',
+    INCREATE: 'in-create',
+    AFTERCREATE: 'after-create'
+}
 
 export default function Customize(){
-    const [show, setShow] = useState('show-btn');
+    const [mode, setMode] = useState(MODES.BEFORECREATE);
+
+    const [displayInfo, setDisplayInfo] = useState({ width: 5, height: 5 });
+
     const [mapInfo, setMapInfo] = useState({
         width: 5,
         height: 5,
         title: '',
         difficulty: 2.5,
+        hint: '',
         map: generateEmptyMap(5, 5)
     });
-    const {width, height, title, difficulty, map} = mapInfo;
+    const {width, height, title, difficulty, hint, map} = mapInfo;
+    useEffect(() => {
+        let { width, height } = displayInfo;
 
-    const handleChange = e => {
-        const name = e.target.name;
-        let value = e.target.value;
-        switch(name){
-            case "width":
-                setMapInfo({...mapInfo, [name]: Number(value), map: generateEmptyMap(height, value)});
-                break;
-            case "height":
-                setMapInfo({...mapInfo, [name]: Number(value), map: generateEmptyMap(value, width)});
-                break;
-            case "title":
-                setMapInfo({...mapInfo, [name]: value});
-                break;
-            /*
-            case "difficulty":
-                setMapInfo({...mapInfo, [name]: Number(value)});
-            */
-            default:
-                break;
-        }
-    };
+        /* data validation */
+        width = checkRange(checkType(width)); // check type then check range
+        height = checkRange(checkType(height));
+
+        setMapInfo(prevInfo => {
+            return {...prevInfo, width, height, map: generateEmptyMap(height, width)};
+        });
+    }, [displayInfo]);
+
+    const changeWidth = e => {
+        setDisplayInfo({...displayInfo, width: e.target.value});
+    }
+
+    const changeHeight = e => {
+        setDisplayInfo({...displayInfo, height: e.target.value});
+    }
+
+    const changeTitle = e => {
+        const value = e.target.value;
+        setMapInfo({...mapInfo, title: value});
+    }
+
+    const changeHint = e => {
+        const value = e.target.value;
+        setMapInfo({...mapInfo, hint: value});
+    }
 
     const handleLeftClick = (r, c) => {
         setMine(r, c, height, width, map);
@@ -55,9 +74,9 @@ export default function Customize(){
                 Accept: "application/json",
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ title, difficulty, width, height, map })
+            body: JSON.stringify({ title, difficulty, hint, width, height, map })
         });
-        setShow('show-success');
+        setMode(MODES.AFTERCREATE);
     };
 
     const handleRecreate = () => {
@@ -69,47 +88,61 @@ export default function Customize(){
             difficulty: 2.5,
             map: generateEmptyMap(5, 5)
         });
-        setShow("show-btn");
+        setMode(MODES.BEFORECREATE);
     }
 
     return <div id="customize">
-        { show === 'show-btn' &&
+        { mode === MODES.BEFORECREATE &&
         <>
-            <h3>Here you can customize and create your map!</h3>
-            <div className="btn" onClick={() => setShow('show-form')}>
+            <h2>Here you can customize and create your map!</h2>
+            <div className="btn" onClick={() => setMode(MODES.INCREATE)}>
                 <p>Let's set your own map!</p>
                 <p className="icon">⬇</p>
             </div>
         </> }
-        { show === 'show-form' && 
+        { mode === MODES.INCREATE && 
             <form className="form" onSubmit={handleSubmit}>
-                <h3>Please enter width and height for your map!</h3>
+                <h2>Generate the size to whatever you want!</h2>
                 <div className="form-section">
-                    <label htmlFor="width">Please Enter Map Width: </label>
-                    <input 
-                        type="number" 
-                        id="width"
-                        name="width"
-                        value={width || ''}
-                        onChange={handleChange}
-                        onWheel={(e) => e.target.blur()}
-                        min="1"
-                        max="25"
+                    <TextField
                         required
+                        className="textfield"
+                        value={displayInfo.width}
+                        onChange={changeWidth}
+                        id="width-outlined"
+                        label="Width (max:25)"
+                        size="small"
+                    />
+                    <Slider
+                        className="slider"
+                        min={1}
+                        max={25}
+                        step={1}
+                        value={width}
+                        onChange={changeWidth}
+                        marks={true}
+                        valueLabelDisplay="auto"
                     />
                 </div>
                 <div className="form-section">
-                    <label htmlFor="height">Please Enter Map Height: </label>
-                    <input 
-                        type="number" 
-                        id="height"
-                        name="height"
-                        value={height || ''}
-                        onChange={handleChange}
-                        onWheel={(e) => e.target.blur()}
-                        min="1"
-                        max="25"
+                    <TextField
                         required
+                        className="textfield"
+                        value={displayInfo.height}
+                        onChange={changeHeight}
+                        id="height-outlined"
+                        label="Height (max:25)"
+                        size="small"
+                    />
+                    <Slider
+                        className="slider"
+                        min={1}
+                        max={25}
+                        step={1}
+                        value={height}
+                        onChange={changeHeight}
+                        marks={true}
+                        valueLabelDisplay="auto"
                     />
                 </div>
                 <h4>*You better not change width and height after you decided to save the map, otherwise you have to plant your map again :(</h4>
@@ -123,22 +156,22 @@ export default function Customize(){
 
                 <hr />
 
-                <h3>Now give it a title and set the difficulty</h3>
+                <h2>Now give it a title and rate the difficulty</h2>
                 <div className="form-section">
-                    <label htmlFor="title">Please Enter Map Title: </label>
-                    <input 
-                        type="text" 
-                        id="title"
-                        name="title"
-                        value={title}
-                        onChange={handleChange}
-                        placeholder="title here"
-                        maxLength="18"
+                    <TextField
                         required
+                        className="textfield centered"
+                        value={title}
+                        onChange={changeTitle}
+                        id="title-outlined"
+                        label="Title (3 ~ 25 characters)"
+                        inputProps={{
+                            maxLength: 25,
+                        }}
                     />
                 </div>
                 <div className="form-section">
-                    <Typography component="legend">Please Set Map Difficulty: </Typography>
+                    <h3>How difficult do you think your map is: </h3>
                     <Rating
                         name="difficulty-controlled"
                         precision={0.5}
@@ -149,10 +182,23 @@ export default function Customize(){
                         }}
                     />
                 </div>
+                <div className="form-section">
+                    <TextField
+                        className="textfield centered"
+                        value={hint}
+                        onChange={changeHint}
+                        id="title-outlined"
+                        label="Hint (3 ~ 89 characters) (optional)"
+                        rows={2}
+                        inputProps={{
+                            maxLength: 89,
+                        }}
+                    />
+                </div>
                 <button className="btn">Save Map!</button>
             </form>
         }
-        { show === "show-success" &&
+        { mode === MODES.AFTERCREATE &&
             <>
             <h2>Your Map Has Been Successfully Submitted and Saved!</h2>
             <img src={designSuccess} alt="minesweeper genius" />

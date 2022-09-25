@@ -1,5 +1,5 @@
-const Map = require('../models/map');
-const { NotFoundError } = require('../errors')
+import Map from '../models/map.js';
+import NotFoundError from '../errors/not-found.js';
 
 const getAllMap = async (req, res) => {
     const {rating, difficulty, sort} = req.query;
@@ -28,7 +28,7 @@ const deleteMap = async (req, res) => {
     res.status(200).send();
 };
 
-module.exports = {
+export {
     getAllMap,
     createMap,
     deleteMap

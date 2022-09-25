@@ -2,21 +2,29 @@ import { useState, useEffect } from "react";
 import Grid from "./Grid";
 import { isLose, isWin } from "../../util/map-helper";
 
+// all modes in Map
+const MODES = {
+    BEFOREGAME: "before-game",
+    INGAME: "in-game",
+    WIN: "win",
+    LOSE: "lose"
+}
+
 export default function Map({width, height, map, handleLeftClick, handleRightClick, isActivated, handleRestart, handleSave}){
-    const [mode, setMode] = useState('');
+    const [mode, setMode] = useState(MODES.BEFOREGAME);
     useEffect(() => {
-        setMode('');
+        setMode(MODES.BEFOREGAME);
     }, [map]);
 
     const [initTime, setInitTime] = useState(0);
     useEffect(() => {
-        if(mode === "in-game") setInitTime(Date.now())
+        if(mode === MODES.INGAME) setInitTime(Date.now())
     }, [mode]);
 
     const [time, setTime] = useState(0);
     useEffect(() => {
         const intervalID = setInterval(() => {
-            if(mode === "in-game"){
+            if(mode === MODES.INGAME){
                 const delta = Date.now() - initTime;
                 setTime(Math.floor(delta/100));
             } else clearInterval(intervalID);
@@ -37,9 +45,9 @@ export default function Map({width, height, map, handleLeftClick, handleRightCli
         }
         // only for play mode
         if(isActivated){
-            if(isWin(height, width, map)) setMode('win');
-            else if(isLose(height, width, map)) setMode('lose');
-            else setMode('in-game');
+            if(isWin(height, width, map)) setMode(MODES.WIN);
+            else if(isLose(height, width, map)) setMode(MODES.LOSE);
+            else setMode(MODES.INGAME);
         }
     }
 
@@ -56,21 +64,23 @@ export default function Map({width, height, map, handleLeftClick, handleRightCli
 
     return  <div id="map">
     {
-        isActivated && map.length !== 0 && <div className="map-title">
-            {mode === "" && "click any grid to start the game!"}
-            {mode === "in-game" && <>
+        isActivated && map.length !== 0 && 
+        <div className="map-title">
+            {mode === MODES.BEFOREGAME && "click any grid to start the game!"}
+            {mode === MODES.INGAME && <>
                 <p>Time: {Math.floor(time/10)}. {time%10}</p>
             </>}
-            {mode === "lose" && <>
+            {mode === MODES.LOSE && <>
                 <p>😫😫😫😫😫 You Lose! 😫😫😫😫😫</p>
                 <p>Your Time: {Math.floor(time/10)}. {time%10}</p>
             </>}
-            {mode === "win" && <>
+            {mode === MODES.WIN && <>
                 <p>🎉🎉🎉🎉🎉 You Win! 🎉🎉🎉🎉🎉</p>
                 <p>Your Time: {Math.floor(time/10)}. {time%10}</p>
             </>}
         </div>
     }
+
     <div 
         className="map-container" 
         style={{
@@ -79,17 +89,17 @@ export default function Map({width, height, map, handleLeftClick, handleRightCli
         }}
         onClick={handleClick}
         onContextMenu={handleClick}
-    >
-        {gridList}
-    </div>
+    > {gridList} </div>
+
     {
-        isActivated && (mode === "win" || mode === "lose") &&  <div className="map-ending">
+        isActivated && (mode === MODES.WIN || mode === MODES.LOSE) &&  
+        <div className="map-ending">
             <div className="btn" onClick={() => {
                 handleSave();
             }}>Save</div>
             <div className="btn" onClick={() => {
                 handleRestart();
-                setMode('');
+                setMode(MODES.BEFOREGAME);
             }}>Restart</div>
         </div>
     }

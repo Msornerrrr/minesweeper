@@ -1,19 +1,27 @@
-require('dotenv').config();
-require('express-async-errors');
+import * as dotenv from 'dotenv'
+dotenv.config()
 
-const path = require('path');
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
+import 'express-async-errors';
+
+import path from 'path';
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+
+// routers
+import userRouter from './routes/user.js'
+import mapRouter from './routes/maps.js';
+
+// middlewares
+import notFoundMiddleware from './middleware/not-found.js';
+import errorMiddleware from './middleware/error-handler.js';
 
 const app = express();
-const mapRouter = require('./routes/maps');
-const notFoundMiddleware = require('./middleware/not-found');
-const errorMiddleware = require('./middleware/error-handler');
 
 app.use(express.json());
 app.use(cors());
 
+app.use('/api/v1/users', userRouter);
 app.use('/api/v1/maps', mapRouter);
 
 if(process.env.NODE_ENV === "production"){

@@ -6,7 +6,7 @@
 }
 
 body{
-  background-color: cornsilk;
+  background-color: mintcream;
 }
 
 h1, h2, h3{
@@ -45,27 +45,39 @@ hr{
 }
 
 .form-section{
-  width: 85%;
-  background-color: lightsalmon;
+  width: 80%;
   margin: 10px auto;
-  padding: 10px;
+  padding: 15px;
   font-size: 1.2rem;
-  box-shadow: 5px 5px coral;
+  border: 1px solid #00a1d6;
+  border-radius: 5px;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  background-color: white;
 }
 
-.form-section .invalid{
-  background-color: red;
-  color: white;
+.form-section > .textfield{
+  align-self: flex-start;
+  margin-left: 50px;
 }
 
-.form-section > input , .form-section > select{
-  width: 150px;
-  height: 30px;
-  font-size: 1rem;
-  text-align: center;
+.form-section > .centered{
+  width: 80%;
+  margin: auto;
+}
+
+.form-section >.slider{
+  width: 100%;
+}
+
+.form-section > p{
+  align-self: flex-start;
+  opacity: .8;
+  margin-top: 5px;
+  margin-left: 10px;
+  font-size: .9rem;
 }
 
 .form > .btn{
@@ -80,6 +92,7 @@ hr{
 /* for map setting */
 
 #map{
+  margin: 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -87,7 +100,8 @@ hr{
 }
 
 #map .btn{
-  background-color: aquamarine;
+  background-color: #abe5f8;
+  border:1px solid #00a1d6;
   transition: .5s;
 }
 
@@ -137,21 +151,30 @@ hr{
 }
 
 .nav-bar > .icon{
-  margin-left: 5%;
-  margin-right: 10%;
+  flex: 2 2 auto;
 }
 
-.nav-bar > .btn{
-  margin: 30px;
-  width: 180px;
-  height: 70px;
+.nav-bar > .btn-wrapper{
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: space-around;
+}
+
+.nav-bar > .user-auth{
+  flex: 2 2 auto;
   text-align: center;
-  line-height: 45px;
-  font-size: 1.8rem;
+}
+
+.nav-bar > .btn-wrapper > .btn{
+  height: 60px;
+  text-align: center;
+  line-height: 35px;
+  font-size: 1.4rem;
+  border: 1px solid #50c6ed;
   transition: .5s;
 }
 
-.nav-bar > .btn:hover{
+.nav-bar > .btn-wrapper > .btn:hover{
   transform: scale(1.1);
 }
 
@@ -189,38 +212,25 @@ hr{
 }
 
 #home > .home-title{
-  margin: 10px auto;
+  margin: 20px auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-around;
   align-items: center;
   height: 45px;
   position: relative;
 }
 
-#home .home-options{
-  margin: 10px auto;
-  background-color: lavender;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  border: 1px solid black;
-  border-radius: 5px;
-  position: absolute;
-  top: 45px;
-}
-
-#home .home-title h3{
-  margin: 0px;
-  width: 200px;
-  height: 45px;
-  text-align: center;
-  background-color: rgb(203, 203, 247);
-  border: 1px solid black;
-}
-
-#home .home-options > h3{
+#home .home-title > .btn{
   margin: 10px;
+  padding: 20px 15px;
+  text-align: center;
+  background-color: lavender;
+  border: 1px solid black;
+}
+
+#home .home-title > .selected{
+  background-color: rgb(206, 206, 243);
 }
 
 /* for customize mode */
@@ -235,7 +245,7 @@ hr{
 }
 
 #customize .btn{
-  background-color: aquamarine;
+  background-color: #7fd4f0;
   transition: .5s;
 }
 
@@ -292,7 +302,7 @@ hr{
   border-radius: 5px;
 }
 
-.map-comment > .rate-map, .map-comment > .rate-difficulty{
+.map-comment > .section{
   align-self: center;
   display: flex;
   width: 300px;
@@ -302,15 +312,21 @@ hr{
 
 .game-map{
   /* width: 230px; */
-  background-color: turquoise;
+  background-color: rgb(192, 255, 224);
   margin: 10px;
   padding: 10px;
-  box-shadow: 5px 5px darkturquoise;
+  box-shadow: 5px 5px rgb(133, 244, 189);
   border-radius: 5%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   flex-wrap: wrap;
+  transition: .5s;
+}
+
+.game-map:hover{
+  transform: scale(1.02);
+  box-shadow: 10px 10px rgb(133, 244, 189);
 }
 
 .game-map > h3{
@@ -324,14 +340,14 @@ hr{
   margin: 5px;
 }
 
-.game-map > .difficulty, .game-map > .rating{
+.game-map > .section{
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.game-map > .difficulty > div, .game-map > .rating > div{
+.game-map > .section > div{
   display: flex;
   align-items: center;
   font-size: 1.1rem;
@@ -363,7 +379,7 @@ hr{
   cursor: pointer;
 }
 
-@media screen and (min-width: 840px){
+/* @media screen and (min-width: 840px){
   .form-section{
     width: 70%;
   }
@@ -377,4 +393,4 @@ hr{
   .form-section > input , .form-section > select{
     width: 200px;
   }
-}
+} */

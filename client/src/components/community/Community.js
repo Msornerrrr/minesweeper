@@ -9,20 +9,28 @@ import loadingImage from "../../images/minesweeper-anime.png";
 // Material UI
 import { Rating, CircularProgress } from "@mui/material";
 
+// all modes for Community
+const MODES = {
+    LOADING: 'loading',
+    DISPLAY: 'display',
+    PLAY: 'play'
+}
+
 export default function Community(){
     const [data, setData] = useState([]);
+
     // initially start with loading data
-    const [mode, setMode] = useState("");
+    const [mode, setMode] = useState(MODES.LOADING);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(0);
     useEffect(() => {
-        setMode("loading");
+        setMode(MODES.LOADING); // loading before fetch the data
         fetch(`/api/v1/maps?page=${page}`)
             .then(res => res.json())
             .then(data => {
                 setData(data.maps); // grab data in
                 setTotalPages(Math.ceil(data.length / 8)); // grab num of pages in
-                setMode("display"); // display the data now
+                setMode(MODES.DISPLAY); // display the data now
             });
     }, [page]);
 
@@ -41,12 +49,12 @@ export default function Community(){
 
     // mapInfo store information of a selected map
     const [mapInfo, setMapInfo] = useState({});
-    const {width, height, map} = mapInfo;
+    const { hint, width, height, map } = mapInfo;
 
     const handlePlay = (id) => {
-        setMode("play");
-        const { title, difficulty, width, height, map } = data.filter(map => map._id === id)[0];
-        setMapInfo({title, difficulty, width, height, map: deepCopyMap(height, width, map)});
+        setMode(MODES.PLAY);
+        const { hint, width, height, map } = data.filter(map => map._id === id)[0];
+        setMapInfo({ hint, width, height, map: deepCopyMap(height, width, map) });
     }
 
     const handleLeftClick = (r, c) => {
@@ -61,7 +69,7 @@ export default function Community(){
 
     const handleRestart = () => {
         setMapInfo({});
-        setMode("display");
+        setMode(MODES.DISPLAY);
     }
 
     const handleSave = () => {
@@ -69,7 +77,7 @@ export default function Community(){
     }
 
     return <div id="community">
-    { mode === "loading" &&
+    { mode === MODES.LOADING &&
         <>
         <h2> Here you can view and play all maps craeted by user </h2>
         <img src={loadingImage} alt="loading anime gril" />
@@ -79,18 +87,19 @@ export default function Community(){
         }}/>
         </>
     }
-    { mode === "display" && 
+    { mode === MODES.DISPLAY && 
         <>
         <h2> Here you can view and play all maps craeted by user </h2>
         <div className="map-galaery">
             {data.map(map => {
-                const { _id, title, rating, difficulty, width, height } = map;
+                const { _id, title, rating, hint, difficulty, width, height } = map;
                 return <Game 
                     key={_id} 
                     id={_id} 
                     title={title} 
                     rating={rating}
                     difficulty={difficulty} 
+                    hint={hint}
                     width={width} 
                     height={height} 
                     handleDelete={handleDelete} 
@@ -112,7 +121,7 @@ export default function Community(){
         </ul>
         </>
     }
-    { mode === "play" &&
+    { mode === MODES.PLAY &&
         <>
         <Map
             width={width} 
@@ -125,16 +134,21 @@ export default function Community(){
             isActivated={true}
         />
         <div className="map-comment">
-            <div className="rate-map">
+            <div>
+                <h3>Some Hint from author: {hint}</h3>
+            </div>
+            <div className="section">
                 <h3>Rate Map: </h3>
                 <Rating
                     name="rating-controlled"
+                    precision={0.5}
                 />
             </div>
-            <div className="rate-difficulty">
+            <div className="section">
                 <h3>Rate Difficulty: </h3>
                 <Rating
                     name="rating-controlled"
+                    precision={0.5}
                 />
             </div>
             <div>

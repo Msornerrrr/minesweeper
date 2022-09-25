@@ -1,71 +1,76 @@
 import React,{ useState, useEffect } from "react";
 import Map from './map/Map';
 import { generateRandomMap, explore, flag } from "../util/map-helper";
+import { checkType, checkRange } from "../util/input-valid";
 
+// Material UI
+import { Slider, TextField } from "@mui/material";
+
+// all modes for Home
 const allModes = [
     {type: "Easy", width: 10, height: 10, numMine: 12},
     {type: "Middle", width: 18, height: 18, numMine: 50},
     {type: "Difficult", width: 25, height: 25, numMine: 95},
-    {type: "Custom"}
+    {type: "Custom", width: 5, height: 5, numMine: 1}
 ];
 
+/*
+const MODES = {
+    EASY: { width: 10, height: 10, numMine: 12 },
+    MIDDLE: { width: 18, height: 18, numMine: 50 },
+    DIFFICULT: { width: 25, height: 25, numMine: 95 },
+    CUSTOM: { width: 5, height: 5, numMine: 1 }
+}
+*/
+
 export default function Home(){
-    /* for mode */
-    const [mode, setMode] = useState("Easy");
+    const [mode, setMode] = useState("Custom");
     const [switchMode, setSwitchMode] = useState(false);
     useEffect(() => {
-        if(mode === "Custom") setMapInfo({width:0, height:0, numMine:0, map:[]});
-        else{
-            const { width, height, numMine } = allModes.filter(obj => obj.type === mode)[0];
-            setMapInfo({width, height, numMine, map: generateRandomMap(width, height, numMine)});
-        }
+        const { width, height, numMine } = allModes.filter(obj => obj.type === mode)[0];
+        setDisplayInfo({ width, height, numMine });
+        // setMapInfo({ width, height, numMine, map: generateRandomMap(width, height, numMine) });
     }, [mode]);
 
-    const [isValid, setIsValid] = useState(true);
+    // displayed map info, may be invalid
+    const [displayInfo, setDisplayInfo] = useState({ width: 0, height: 0, numMine: 0 });
 
-    const [mapInfo, setMapInfo] = useState({width:0, height:0, numMine:0, map:[]});
-    const {width, height, numMine, map} = mapInfo;
+    // keep track of actual map information
+    const [mapInfo, setMapInfo] = useState({ width: 0, height: 0, numMine: 0, map: [] });
+    const { width, height, numMine, map } = mapInfo;
+    useEffect(() => {
+        let { width, height, numMine } = displayInfo;
 
-    const handleChange = e => {
-        const name = e.target.name;
-        const value = Number(e.target.value);
-        if(name === "width"){
-            if(value <= 0 || value > 25 || numMine > value * height){
-                setMapInfo({...mapInfo, [name]: value, map: []});
-                setIsValid(false);
-            } else{
-                setMapInfo({...mapInfo, [name]: value, map: generateRandomMap(height, value, numMine)});
-                setIsValid(true);
-            }
-        }
-        if(name === "height"){
-            if(value <= 0 || value > 25 || numMine > width * value){
-                setMapInfo({...mapInfo, [name]: value, map: []});
-                setIsValid(false);
-            } else{
-                setMapInfo({...mapInfo, [name]: value, map: generateRandomMap(value, width, numMine)});
-                setIsValid(true);
-            }
-        }
-        if(name === "numMine"){
-            if(value <= 0 || value > width * height){
-                setMapInfo({...mapInfo, [name]: value, map: []});
-                setIsValid(false);
-            } else{
-                setMapInfo({...mapInfo, [name]: value, map: generateRandomMap(height, width, value)});
-                setIsValid(true);
-            }
-        }
-    };
+        /* data validation */
+        width = checkRange(checkType(width)); // check type then check range
+        height = checkRange(checkType(height));
+        numMine = checkType(numMine);
+        if(width * height < numMine) numMine = width * height;
+
+        /* safely update map info */
+        setMapInfo({ width, height, numMine, map: generateRandomMap(height, width, numMine) });
+    }, [displayInfo]);
+
+    const changeWidth = e => {
+        setDisplayInfo({...displayInfo, width: e.target.value});
+    }
+
+    const changeHeight = e => {
+        setDisplayInfo({...displayInfo, height: e.target.value});
+    }
+
+    const changeMines = e => {
+        setDisplayInfo({...displayInfo, numMine: e.target.value});
+    }
 
     const handleLeftClick = (r, c) => {
         explore(r, c, height, width, map);
-        setMapInfo({...mapInfo, map: map});
+        setMapInfo({...mapInfo, map});
     };
 
     const handleRightClick = (r, c) => {
         flag(r, c, map);
-        setMapInfo({...mapInfo, map: map});
+        setMapInfo({...mapInfo, map});
     };
 
     const handleRestart = () => {
@@ -75,97 +80,119 @@ export default function Home(){
     const handleSave = () => {
         // post data
     }
-
-    const handleSubmit = e => {
-        e.preventDefault();
-    };
     
     return <div id="home">
     <div className="home-title" onClick={() => setSwitchMode(!switchMode)}>
-        { <>
         {
-            allModes.filter(obj => obj.type === mode).map(obj => {
-                const { type, width, height } = obj;
-                return <h3 key={type} className="btn">{type} Mode ({width} x {height})</h3>
+            allModes.map(opt => {
+                const { type, width: localWidth, height: localHeight } = opt;
+                if(type === mode){
+                    return <h3 
+                        key={type} 
+                        className="btn selected" 
+                        onClick={() => setMode(type)}
+                    >{type} Mode ({width} x {height})</h3>
+                } else{
+                    return <h3 
+                        key={type} 
+                        className="btn"
+                        onClick={() => setMode(type)}
+                    >{type} Mode ({localWidth} x {localHeight})</h3>
+                }
             })
         }
-        {
-            switchMode &&
-            <div className="home-options">{
-            allModes.filter(obj => obj.type !== mode).map(obj => {
-                const { type, width, height } = obj;
-                return <h3
-                    key={type}
-                    className="btn"
-                    onClick={() => setMode(type)}
-                >{type} Mode ({width} x {height})</h3>
-            })
-        }</div>
-        }
-        </>}
     </div>
 
     {   mode === "Custom" &&
         <form className="form">
-            <h3>Please enter width, height, and num of mines!</h3>
-            <h4>Note: the maximum width and height is 25</h4>
-            <div className="form-section" onSubmit={handleSubmit}>
-                <label htmlFor="width">Please Enter Map Width: </label>
-                <input 
-                    type="number" 
-                    id="width"
-                    name="width"
-                    value={width || ''}
-                    onChange={handleChange}
-                    onWheel={(e) => e.target.blur()}
+            <h2>Customize the size to whatever you want!</h2>
+            <div className="form-section">
+                <TextField
                     required
+                    className="textfield"
+                    value={displayInfo.width}
+                    onChange={changeWidth}
+                    id="width-outlined"
+                    label="Width (max:25)"
+                    size="small"
+                />
+                <Slider
+                    className="slider"
+                    min={1}
+                    max={25}
+                    step={1}
+                    value={width}
+                    onChange={changeWidth}
+                    marks={true}
+                    valueLabelDisplay="auto"
                 />
             </div>
             <div className="form-section">
-                <label htmlFor="height">Please Enter Map Height: </label>
-                <input 
-                    type="number" 
-                    id="height"
-                    name="height"
-                    value={height || ''}
-                    onChange={handleChange}
-                    onWheel={(e) => e.target.blur()}
+                <TextField
                     required
+                    className="textfield"
+                    value={displayInfo.height}
+                    onChange={changeHeight}
+                    id="height-outlined"
+                    label="Height (max:25)"
+                    size="small"
+                />
+                <Slider
+                    className="slider"
+                    min={1}
+                    max={25}
+                    step={1}
+                    value={height}
+                    onChange={changeHeight}
+                    marks={true}
+                    valueLabelDisplay="auto"
                 />
             </div>
+
             <div className="form-section">
-                <label htmlFor="numMine">Please Enter Number of Mines: </label>
-                <input 
-                    type="number" 
-                    id="numMine"
-                    name="numMine"
-                    value={numMine || ''}
-                    onChange={handleChange}
-                    onWheel={(e) => e.target.blur()}
+                <TextField
                     required
+                    className="textfield"
+                    value={displayInfo.numMine}
+                    onChange={changeMines}
+                    id="numMine-outlined"
+                    label={`# Mines (max: ${width*height})`}
+                    size="small"
                 />
+                <Slider
+                    className="slider"
+                    min={1}
+                    max={width*height}
+                    step={1}
+                    value={numMine}
+                    onChange={changeMines}
+                    marks={[
+                        {
+                            value: Math.floor(width*height*0.05),
+                            label: `${Math.floor(width*height*0.05)}`
+                        },
+                        {
+                            value: Math.floor(width*height*0.2),
+                            label: `${Math.floor(width*height*0.2)}`
+                        }
+                    ]}
+                    valueLabelDisplay="auto"
+                />
+                <p>* reasonable range [{Math.floor(width*height*0.05)}, {Math.floor(width*height*0.2)}]</p>
             </div>
             <h4>*If you alter the width, height, or #mines, it would automatically re-create the map :(</h4>
         </form>
     }
 
-    {
-        isValid ?
-        <Map
-            width={width} 
-            height={height} 
-            map={map} 
-            handleLeftClick={handleLeftClick}
-            handleRightClick={handleRightClick}
-            handleRestart={handleRestart}
-            handleSave={handleSave}
-            isActivated={true}
-        />
-        :
-        <div>
-            <h3>The map is invalid!!!</h3>
-
-        </div>
-    }
+    <Map
+        width={width} 
+        height={height} 
+        map={map} 
+        handleLeftClick={handleLeftClick}
+        handleRightClick={handleRightClick}
+        handleRestart={handleRestart}
+        handleSave={handleSave}
+        isActivated={true}
+    />
     </div>;
 };

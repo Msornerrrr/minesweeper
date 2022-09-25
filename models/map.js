@@ -1,6 +1,7 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+const { Schema, model } = mongoose;
 
-const gridSchema = new mongoose.Schema({
+const gridSchema = new Schema({
     num: {
         type: Number,
         required: [true, 'grid num must be provided']
@@ -19,7 +20,7 @@ const gridSchema = new mongoose.Schema({
     }
 });
 
-const mapSchema = new mongoose.Schema({
+const mapSchema = new Schema({
     title: {
         type: String,
         default: "no title"
@@ -33,8 +34,12 @@ const mapSchema = new mongoose.Schema({
     difficulty: {
         type: Number,
         min: 0,
-        max: 2.5,
+        max: 5,
         default: 2.5,
+    },
+    hint: {
+        type: String,
+        default: "no hint, gook luck"
     },
     width: {
         type: Number,
@@ -54,7 +59,8 @@ const mapSchema = new mongoose.Schema({
     }
     /* future added
     creator:{
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
         required: [true, 'creator of map must be provided']
     },
     comments:{
@@ -68,4 +74,4 @@ const mapSchema = new mongoose.Schema({
     */
 });
 
-module.exports = mongoose.model('Map', mapSchema);
+export default model('Map', mapSchema);

@@ -1,12 +1,10 @@
-const express = require('express');
-const router = express.Router();
-const {
-    getAllMap,
-    createMap,
-    deleteMap
-} = require('../controllers/maps');
+import { Router } from 'express';
+import { getAllMap, createMap, deleteMap } from '../controllers/maps.js';
+import auth from '../middleware/authentication.js';
 
-router.route('/').get(getAllMap).post(createMap);
-router.route('/:id').delete(deleteMap);
+const router = Router();
 
-module.exports = router;
+router.route('/').get(getAllMap).post(/*auth, */createMap);
+router.route('/:id').delete(/*auth, */deleteMap);
+
+export default router;
