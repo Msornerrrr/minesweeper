@@ -1,7 +1,7 @@
 import React,{ useState, useEffect } from "react";
 import Game from './Game';
 import Map from '../map/Map';
-import { deepCopyMap, explore, flag } from "../../util/map-helper";
+import { explore, flag, cleanMap } from "../../util/map-helper";
 
 // images imported
 import loadingImage from "../../images/minesweeper-anime.png";
@@ -54,20 +54,27 @@ export default function Community(){
     const handlePlay = (id) => {
         setMode(MODES.PLAY);
         const { hint, width, height, map } = data.filter(map => map._id === id)[0];
-        setMapInfo({ hint, width, height, map: deepCopyMap(height, width, map) });
+        // no need for a deep copy because of cleanMap function
+        setMapInfo({ hint, width, height, map });
     }
 
     const handleLeftClick = (r, c) => {
         explore(r, c, height, width, map);
-        setMapInfo({...mapInfo, map: map});
+        setMapInfo({...mapInfo, map});
     };
 
     const handleRightClick = (r, c) => {
         flag(r, c, map);
-        setMapInfo({...mapInfo, map: map});
+        setMapInfo({...mapInfo, map});
     };
 
     const handleRestart = () => {
+        cleanMap(height, width, map);
+        setMapInfo({...mapInfo, map});
+    }
+
+    const handleBack = () => {
+        cleanMap(height, width, map);
         setMapInfo({});
         setMode(MODES.DISPLAY);
     }
@@ -123,6 +130,9 @@ export default function Community(){
     }
     { mode === MODES.PLAY &&
         <>
+        <div className="game-header">
+            <p className="btn" onClick={handleBack}>back</p>
+        </div>
         <Map
             width={width} 
             height={height} 
@@ -133,18 +143,18 @@ export default function Community(){
             handleSave={handleSave}
             isActivated={true}
         />
-        <div className="map-comment">
-            <div>
-                <h3>Some Hint from author: {hint}</h3>
+        <div className="game-comment">
+            <div className="game-header">
+                <h3>*Hint: {hint || "no hint, gook luck"}</h3>
             </div>
-            <div className="section">
+            <div className="game-section">
                 <h3>Rate Map: </h3>
                 <Rating
                     name="rating-controlled"
                     precision={0.5}
                 />
             </div>
-            <div className="section">
+            <div className="game-section">
                 <h3>Rate Difficulty: </h3>
                 <Rating
                     name="rating-controlled"

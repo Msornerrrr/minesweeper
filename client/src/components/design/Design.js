@@ -80,15 +80,9 @@ export default function Design(){
     };
 
     const handleRecreate = () => {
-        // clear text in textfield
-        setMapInfo({
-            width: 5,
-            height: 5,
-            title: '',
-            difficulty: 2.5,
-            map: generateEmptyMap(5, 5)
-        });
-        setMode(MODES.BEFORECREATE);
+        setDisplayInfo({ width: 5, height: 5 }); // recreate width, and height, map
+        setMapInfo({ ...mapInfo, title: '', difficulty: 2.5, }); // recreate title and difficulty
+        setMode(MODES.INCREATE);
     }
 
     return <div id="design">

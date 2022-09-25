@@ -89,3 +89,12 @@ export function isWin(height, width, map){
             if(map[i][j].isExplored === map[i][j].isMine) return false;
     return true;
 }
+
+export function cleanMap(height, width, map){
+    for(let i = 0; i < height; i++){
+        for(let j = 0; j < width; j++){
+            map[i][j].isExplored = false;
+            map[i][j].isFlagged = false;
+        }
+    }
+}

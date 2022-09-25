@@ -32,6 +32,7 @@ hr{
   text-align: center;
 }
 
+
 /* for form setting */
 .form{
   margin: 10px auto;
@@ -89,8 +90,8 @@ hr{
   margin: 10px auto;
 }
 
-/* for map setting */
 
+/* for map setting */
 #map{
   margin: 10px;
   display: flex;
@@ -146,23 +147,20 @@ hr{
   height: 100px;
   border-bottom: 3px solid black;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
 }
 
-.nav-bar > .icon{
-  flex: 2 2 auto;
+.nav-bar > .user-auth, .nav-bar > .icon{
+  flex-grow: 1;
+  flex-basis: 0;
+  text-align: center;
 }
 
 .nav-bar > .btn-wrapper{
-  flex: 1 1 auto;
+  width: 50%;
   display: flex;
-  justify-content: space-around;
-}
-
-.nav-bar > .user-auth{
-  flex: 2 2 auto;
-  text-align: center;
+  justify-content: space-evenly;
 }
 
 .nav-bar > .btn-wrapper > .btn{
@@ -178,6 +176,7 @@ hr{
 .nav-bar > .btn-wrapper > .btn:hover{
   transform: scale(1.1);
 }
+
 
 /* for main content */
 .main-content{
@@ -195,7 +194,7 @@ hr{
   font-size: 3rem;
 }
 
-#play, #design, #community{
+.main-content > div{
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -203,7 +202,9 @@ hr{
   text-align: center;
 }
 
-/* for play section */
+
+/** for play section **/
+
 #play .btn{
   transition: .5s;
 }
@@ -254,12 +255,16 @@ hr{
   transform: scale(1.1);
 }
 
-/* for community mode */
+
+/** for community mode **/
+
+/* community loading mode */
 #community > img{
   width: 300px;
   opacity: .6;
 }
 
+/* community display mode */
 #community > .map-galaery{
   width: 92%;
   padding: 10px;
@@ -292,7 +297,27 @@ hr{
   color: rgb(225, 246, 246);
 }
 
-#community > .map-comment{
+/* community play mode */
+#community > .game-header{
+  width: 100%;
+  margin: 0;
+  position: relative;
+}
+
+.game-header > .btn{
+  border: 1px solid #00a1d6;
+  position: absolute;
+  left: 20px;
+  bottom: -20px;
+  font-size: 1.1rem;
+  transition: .5s;
+}
+
+.game-header > .btn:hover{
+  transform: scale(1.1);
+}
+
+#community > .game-comment{
   align-self: flex-start;
   margin-left: 10%;
   display: flex;
@@ -303,7 +328,7 @@ hr{
   border-radius: 5px;
 }
 
-.map-comment > .section{
+.game-comment > .game-section{
   align-self: center;
   display: flex;
   width: 300px;
@@ -311,6 +336,7 @@ hr{
   align-items: center;
 }
 
+/* style for each map */
 .game-map{
   /* width: 230px; */
   background-color: rgb(192, 255, 224);
@@ -379,19 +405,3 @@ hr{
   background-color: red;
   cursor: pointer;
 }
-
-/* @media screen and (min-width: 840px){
-  .form-section{
-    width: 70%;
-  }
-}
-
-@media screen and (min-width: 1200px){
-  .form-section{
-    width: 60%;
-  }
-
-  .form-section > input , .form-section > select{
-    width: 200px;
-  }
-} */
