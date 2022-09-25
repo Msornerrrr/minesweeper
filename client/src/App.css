@@ -166,6 +166,7 @@ hr{
 }
 
 .nav-bar > .btn-wrapper > .btn{
+  width: 140px;
   height: 60px;
   text-align: center;
   line-height: 35px;
@@ -194,7 +195,7 @@ hr{
   font-size: 3rem;
 }
 
-#home, #customize, #community{
+#play, #design, #community{
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -202,16 +203,16 @@ hr{
   text-align: center;
 }
 
-/* for home section */
-#home .btn{
+/* for play section */
+#play .btn{
   transition: .5s;
 }
 
-#home .btn:hover{
+#play .btn:hover{
   transform: scale(1.1);
 }
 
-#home > .home-title{
+#play > .play-title{
   margin: 20px auto;
   display: flex;
   flex-direction: row;
@@ -221,7 +222,7 @@ hr{
   position: relative;
 }
 
-#home .home-title > .btn{
+#play .play-title > .btn{
   margin: 10px;
   padding: 20px 15px;
   text-align: center;
@@ -229,27 +230,27 @@ hr{
   border: 1px solid black;
 }
 
-#home .home-title > .selected{
+#play .play-title > .selected{
   background-color: rgb(206, 206, 243);
 }
 
-/* for customize mode */
-#customize > img{
+/* for design mode */
+#design > img{
   width: 80%;
   border-radius: 15px;
 }
 
-#customize h4{
+#design h4{
   font-size: 1.1rem;
   text-align: left;
 }
 
-#customize .btn{
+#design .btn{
   background-color: #7fd4f0;
   transition: .5s;
 }
 
-#customize .btn:hover{
+#design .btn:hover{
   transform: scale(1.1);
 }
 

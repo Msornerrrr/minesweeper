@@ -23,7 +23,7 @@ const MODES = {
 }
 */
 
-export default function Home(){
+export default function Play(){
     const [mode, setMode] = useState("Custom");
     const [switchMode, setSwitchMode] = useState(false);
     useEffect(() => {
@@ -81,8 +81,8 @@ export default function Home(){
         // post data
     }
     
-    return <div id="home">
-    <div className="home-title" onClick={() => setSwitchMode(!switchMode)}>
+    return <div id="play">
+    <div className="play-title" onClick={() => setSwitchMode(!switchMode)}>
         {
             allModes.map(opt => {
                 const { type, width: localWidth, height: localHeight } = opt;

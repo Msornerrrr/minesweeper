@@ -16,7 +16,7 @@ const MODES = {
     AFTERCREATE: 'after-create'
 }
 
-export default function Customize(){
+export default function Design(){
     const [mode, setMode] = useState(MODES.BEFORECREATE);
 
     const [displayInfo, setDisplayInfo] = useState({ width: 5, height: 5 });
@@ -91,10 +91,10 @@ export default function Customize(){
         setMode(MODES.BEFORECREATE);
     }
 
-    return <div id="customize">
+    return <div id="design">
         { mode === MODES.BEFORECREATE &&
         <>
-            <h2>Here you can customize and create your map!</h2>
+            <h2>Here you can design and create your map!</h2>
             <div className="btn" onClick={() => setMode(MODES.INCREATE)}>
                 <p>Let's set your own map!</p>
                 <p className="icon">⬇</p>

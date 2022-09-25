@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import './App.css';
 
-import Home from './components/Home';
-import Customize from './components/customize/Customize';
+import Play from './components/Play';
+import Design from './components/design/Design';
 import Community from './components/community/Community';
-
 import Icon from './components/Icon';
 
 const MODES = {
-  HOME: 'Home',
-  CUSTOMIZE: 'Customize',
+  PLAY: 'Play',
+  DESIGN: 'Design',
   COMMUNITY: 'Community'
 }
 
 function App() {
-  const [mode, setMode] = useState(MODES.HOME);
+  const [mode, setMode] = useState(MODES.PLAY);
   // const [mineIcon, setMineIcon] = useState('M');
 
   return <>
@@ -24,7 +23,7 @@ function App() {
       </div>
       <div className='btn-wrapper'>
       {
-        ["Home", "Customize", "Community"].map((mod, index) => (
+        ["Play", "Design", "Community"].map((mod, index) => (
           <div
             key={index} 
             className='btn' 
@@ -41,8 +40,8 @@ function App() {
 
     <main className='main-content'>
       <h1>Welcome to Minesweeper!</h1>
-      {mode === MODES.HOME && <Home/>}
-      {mode === MODES.CUSTOMIZE && <Customize/>}
+      {mode === MODES.PLAY && <Play/>}
+      {mode === MODES.DESIGN && <Design/>}
       {mode === MODES.COMMUNITY && <Community/>}
     </main>
   </>;
